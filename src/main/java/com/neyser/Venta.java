@@ -175,7 +175,7 @@ public class Venta {
             System.out.println("La cantidad debe ser menor a "+cantCompra);
         } else
         {
-            actualizarProducto(productoCompra, 15.02,cantCompra);
+            actualizarProducto(productoCompra, obtenerPrecioProducto(productoCompra),obtenerCantidadProducto(productoCompra)-cantCompra);
         }
 
 
@@ -276,7 +276,7 @@ public class Venta {
         return resultado;
 
     }
-    public Integer obtenerPrecioProducto(String producto)
+    public Double obtenerPrecioProducto(String producto)
     {
         Double resultado = 0.0;
 
@@ -344,7 +344,7 @@ public class Venta {
         }
 
         // Escribir en fichero
-        FileWriter fileWriter1 = new FileWriter(file1, true);
+        FileWriter fileWriter1 = new FileWriter(file1, false);
         BufferedWriter bufferedWriter1 = new BufferedWriter(fileWriter1);
 
         bufferedWriter1.write(producto.getDenominacion()+"|");
