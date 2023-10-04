@@ -195,7 +195,7 @@ public class Venta {
         pathnames = file2.list();
 
         System.out.println("______________________________");
-        System.out.println("           PRODUCTOS         ");
+        System.out.println("      STOCK DE PRODUCTOS      ");
         System.out.println("______________________________");
 
         System.out.println("Nombre\t\tPrecio\tCantidad\t");
@@ -204,9 +204,15 @@ public class Venta {
             File file1 = new File(pathname);
 
             String prod = file1.getName().substring(0,file1.getName().length()-4);
-            System.out.println(leerProducto(prod));
+            if (leerProducto(prod)!=""){
+                System.out.println(leerProducto(prod));
+            }
+
         }
 
+        menu();
+
+        /*
         System.out.println("______________________________");
 
         System.out.println("Ingresar el producto a comprar:");
@@ -224,6 +230,10 @@ public class Venta {
         }
 
         System.out.println("Cantidad de "+ productoCompra +" = " + obtenerCantidadProducto(productoCompra));
+
+         */
+
+
 
     }
 
@@ -269,7 +279,11 @@ public class Venta {
             e2.printStackTrace();
         }
 
+
+        //System.out.println("TEST - "+resultado);
+
         return resultado;
+
 
     }
     public void comprar(String producto)
