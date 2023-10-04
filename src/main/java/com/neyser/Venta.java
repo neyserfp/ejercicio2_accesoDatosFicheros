@@ -73,7 +73,10 @@ public class Venta {
 
     public void registrarVenta() throws IOException
     {
-        String fichero = "001";
+
+        String nom1 = generarNombreVenta(contarVentas());
+
+        String fichero = nom1+".txt";
 
         File file1 = new File("Transacciones/"+fichero);
 
@@ -92,10 +95,51 @@ public class Venta {
             e.printStackTrace();
         }
 
+        // Escribir venta
+        FileWriter fileWriter1 = new FileWriter(file1, false);
+        BufferedWriter bufferedWriter1 = new BufferedWriter(fileWriter1);
+
+        //Quien compra
+        System.out.println("Indique el nombre del cliente");
+        String cliente =  sc1.nextLine();
+
+        //Que compra compra
+        System.out.println("Indique el nombre del producto");
+        String producto =  sc1.nextLine();
+
+        //Dónde se le envía lo comprado.
+        System.out.println("Indique el destino de la compra");
+        String destino =  sc1.nextLine();
+
+        //Cantidad del producto
+        System.out.println("Indique la cantidad de: "+producto);
+        Integer cantidad =  Integer.parseInt(sc1.nextLine());
+
+
+        if (obtenerCantidadProducto(producto)-cantidad<0)
+        {
+            System.out.println("La cantidad debe ser menor a "+cantidad);
+        } else
+        {
+            bufferedWriter1.write(cliente+"|");
+            bufferedWriter1.write(producto+"|");
+            bufferedWriter1.write(destino+"|");
+            bufferedWriter1.write(cantidad.toString());
+
+            bufferedWriter1.close();
+            System.out.println("Se ha registrado la compra con éxito");
+
+            actualizarProducto(producto, obtenerPrecioProducto(producto),obtenerCantidadProducto(producto)-cantidad);
+        }
+
+        //System.out.println("Cantidad de "+ producto +" = " + obtenerCantidadProducto(producto));
+
+        menu();
+
     }
 
-    public void registrarProducto() throws IOException {
-
+    public void registrarProducto() throws IOException
+    {
         Producto producto = new Producto();
 
         System.out.println("Escriba el nombre del producto");
@@ -144,7 +188,8 @@ public class Venta {
 
     }
 
-    public void mostrarProductos() throws IOException {
+    public void mostrarProductos() throws IOException
+    {
         File file2 = new File("Productos");
         String[] pathnames;
         pathnames = file2.list();
@@ -178,14 +223,12 @@ public class Venta {
             actualizarProducto(productoCompra, obtenerPrecioProducto(productoCompra),obtenerCantidadProducto(productoCompra)-cantCompra);
         }
 
-
-
-
         System.out.println("Cantidad de "+ productoCompra +" = " + obtenerCantidadProducto(productoCompra));
 
     }
 
-    public String leerProducto(String producto) throws IOException {
+    public String leerProducto(String producto) throws IOException
+    {
 
         File file1 = new File("Productos/"+producto+".txt");
         file1.createNewFile();
@@ -320,7 +363,8 @@ public class Venta {
 
     }
 
-    public void actualizarProducto(String prod, Double precio, Integer cantidad) throws IOException {
+    public void actualizarProducto(String prod, Double precio, Integer cantidad) throws IOException
+    {
         Producto producto = new Producto();
         producto.setDenominacion(prod);
         producto.setPrecio(precio);
@@ -357,6 +401,46 @@ public class Venta {
         //sc1.close();
 
         menu();
+    }
+
+    public Integer contarVentas()
+    {
+        Integer resultado = 1;
+        File file2 = new File("Transacciones");
+        String[] pathnames;
+        pathnames = file2.list();
+
+
+        for (String pathname: pathnames) {
+            resultado++;
+            //File file1 = new File(pathname);
+
+            //String prod = file1.getName().substring(0,file1.getName().length()-4);
+            //System.out.println(leerProducto(prod));
+        }
+
+        return resultado;
+    }
+
+    public String generarNombreVenta(Integer cantidad)
+    {
+        Integer tamanio = cantidad.toString().length();
+        String nombre = "";
+
+        switch (tamanio){
+            case 1:
+                nombre = "00"+cantidad.toString();
+                break;
+            case 2:
+                nombre = "0"+cantidad.toString();
+                break;
+            default:
+                nombre = cantidad.toString();
+
+        }
+
+        return nombre;
+
     }
 
 }
